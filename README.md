@@ -1,10 +1,9 @@
 #
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Main Menu</title>
+    <title>Welcome Racer</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Configure Tailwind to use Inter font -->
@@ -51,7 +50,7 @@
                 <!-- CPS Tester Option (First) -->
                 <li>
                     <a href="javascript:void(0)" onclick="showPage('cps-tester')"
-                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-gray-700 rounded-t-lg hover:bg-indigo-50 transition-colors duration-200">
+                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-gray-700 rounded-t-lg hover:bg-indigo-1000 transition-colors duration-200">
                         <!-- Mouse Click Icon -->
                         <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
                         CPS Tester
@@ -64,7 +63,7 @@
                 <!-- Reaction Tester Option (Second) -->
                 <li>
                     <a href="javascript:void(0)" onclick="showPage('reaction-tester')"
-                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-gray-700 hover:bg-indigo-50 transition-colors duration-200">
+                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-gray-700 hover:bg-indigo-1000 transition-colors duration-200">
                         <!-- Lightning Bolt Icon -->
                         <svg class="w-5 h-5 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Reaction Tester
@@ -77,7 +76,7 @@
                 <!-- Play Online Option (Last) -->
                 <li>
                     <a href="javascript:void(0)" onclick="showPage('play-online')" 
-                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-white bg-indigo-600 rounded-b-lg hover:bg-indigo-700 transition-colors duration-200">
+                       class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium text-gray-700 hover:bg-indigo-1000 transition-colors duration-200">
                         <!-- Gamepad Icon -->
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 20l-1-7-5.5 2.5v1.5L11 20zM13 20l1-7 5.5 2.5v1.5L13 20zM2 10l5.5-2.5L11 10h2l3.5-1.5L22 10V6a2 2 0 00-2-2H4a2 2 0 00-2 2v4z"></path></svg>
                         Play Online
