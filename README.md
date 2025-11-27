@@ -162,7 +162,7 @@
         <!-- Dynamic Content Pages -->
         <div id="pages-container" class="mt-8">
 
-            <!-- Practice Page Content (Handles two views: Car Select and Car Details) -->
+            <!-- Practice Page Content (Handles three views: Car Select, Car Details, Map Selection) -->
             <div id="practice" class="page bg-white rounded-lg shadow-xl p-6">
                 
                 <!-- 1. Car Selection View (Default) -->
@@ -272,13 +272,34 @@
 
                     <!-- Action Buttons -->
                     <div class="space-y-3">
-                        <button class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors shadow-md">
+                        <!-- UPDATED: Calls showMapSelectionView() -->
+                        <button onclick="showMapSelectionView()" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors shadow-md">
                             Start Race Practice
                         </button>
                         <button onclick="showCarSelectView()" class="w-full bg-gray-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors shadow-md">
                             ← Select a Different Car
                         </button>
                     </div>
+                </div>
+
+                <!-- 3. Map Selection View (NEW CONTENT) -->
+                <div id="map-selection-view" class="view-transition hidden">
+                    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Choose Practice Mode</h2>
+                    
+                    <!-- Random Map Option -->
+                    <button onclick="startRace('random')" class="w-full mb-4 p-4 bg-green-600 text-white font-bold text-xl rounded-lg hover:bg-green-700 transition-colors shadow-lg flex items-center justify-center">
+                        <span class="mr-3 text-2xl" role="img" aria-label="Dice">🎲</span> Random Map
+                    </button>
+
+                    <!-- Maps Option -->
+                    <button onclick="showMapsList()" class="w-full mb-6 p-4 bg-blue-600 text-white font-bold text-xl rounded-lg hover:bg-blue-700 transition-colors shadow-lg flex items-center justify-center">
+                        <span class="mr-3 text-2xl" role="img" aria-label="Map">🗺️</span> Select Map
+                    </button>
+
+                    <!-- Back Button -->
+                    <button onclick="showCarDetailsView()" class="w-full bg-gray-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors shadow-md">
+                        ← Back to Car Details
+                    </button>
                 </div>
             </div>
             
@@ -367,6 +388,9 @@
     </div>
 
     <script>
+        // --- Global State ---
+        let currentSelectedCarId = null; // Stores the ID of the currently selected car.
+
         // --- Car Data (Mock data, update this section with your actual details later!) ---
         const carData = {
             'AE86': {
@@ -415,7 +439,12 @@
             
             // If navigating to practice, ensure we start on the selection view
             if (pageId === 'practice') {
-                showCarSelectView();
+                // If a car is already selected, start at the car details or map selection (if coming from menu, go to car select)
+                if (!currentSelectedCarId || currentPage === 'menu') {
+                     showCarSelectView();
+                } else {
+                    showCarDetailsView(); // Or keep the last view
+                }
             }
 
             const pages = document.querySelectorAll('.page');
@@ -445,13 +474,15 @@
             currentPage = pageId;
         }
 
-        // --- Practice Mode Logic (Carousel + Details) ---
+        // --- Practice Mode Logic (Carousel + Details + Map Selection) ---
         const carSelectView = document.getElementById('car-select-view');
         const carDetailsView = document.getElementById('car-details-view');
+        const mapSelectionView = document.getElementById('map-selection-view'); // NEW ELEMENT
 
-        /** Shows the carousel view within the practice page. */
+        /** Transitions to the Car Selection View */
         function showCarSelectView() {
             carDetailsView.classList.add('hidden');
+            mapSelectionView.classList.add('hidden'); // Ensure map selection is hidden
             carSelectView.classList.remove('hidden');
             // Ensure indicators are updated when returning to select view
             const carousel = document.getElementById('car-carousel');
@@ -460,10 +491,18 @@
             }
         }
 
-        /** Shows the car details view within the practice page. */
+        /** Transitions to the Car Details View */
         function showCarDetailsView() {
             carSelectView.classList.add('hidden');
+            mapSelectionView.classList.add('hidden'); // Ensure map selection is hidden
             carDetailsView.classList.remove('hidden');
+        }
+
+        /** Transitions to the Map Selection View (Random/Maps) */
+        function showMapSelectionView() {
+            carDetailsView.classList.add('hidden');
+            carSelectView.classList.add('hidden');
+            mapSelectionView.classList.remove('hidden');
         }
 
         /**
@@ -474,6 +513,9 @@
             const data = carData[carKey];
             if (!data) return; // Guard clause
 
+            // Store selected car ID
+            currentSelectedCarId = carKey;
+            
             // Fill Data in the Details View
             document.getElementById('details-car-name').textContent = data.name;
             document.getElementById('details-car-subtitle').textContent = data.subtitle;
@@ -487,6 +529,20 @@
 
             // Transition to the details view
             showCarDetailsView();
+        }
+
+        /** Handles starting the race (called from Map Selection View) */
+        function startRace(mode) {
+            let carName = carData[currentSelectedCarId] ? carData[currentSelectedCarId].name : 'Unknown Car';
+            let mapName = mode === 'random' ? 'a Random Map' : 'Selected Map';
+            
+            // Use a simple alertBox for now, as no game logic is implemented
+            alertBox(`Starting race in ${mode.toUpperCase()} mode with the ${carName} on ${mapName}! (Implement game logic here)`);
+        }
+
+        /** Placeholder for showing the map list (future feature) */
+        function showMapsList() {
+            alertBox('Functionality to select a specific map is not yet implemented. Try Random Map!');
         }
 
         function scrollCarousel(direction) {
@@ -528,7 +584,26 @@
             });
         }
         
-        // --- CPS Tester Logic (Unchanged from previous version) ---
+        // --- CUSTOM ALERT BOX (Replaces alert() and confirm()) ---
+        function alertBox(message) {
+            const existingAlert = document.getElementById('custom-alert');
+            if (existingAlert) existingAlert.remove();
+            
+            const alertHtml = `
+                <div id="custom-alert" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
+                    <div class="bg-white rounded-xl p-6 shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-100">
+                        <h3 class="text-xl font-bold text-red-600 mb-4">Notification</h3>
+                        <p class="text-gray-700 mb-6">${message}</p>
+                        <button onclick="document.getElementById('custom-alert').remove()" class="w-full bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', alertHtml);
+        }
+
+        // --- CPS Tester Logic (Unchanged) ---
         let cpsGameState = 'IDLE';
         let clicks = 0;
         let timeLeft = 5; 
@@ -675,7 +750,7 @@
             }
         });
 
-        // --- Reaction Tester Logic (Unchanged from previous version) ---
+        // --- Reaction Tester Logic (Unchanged) ---
         let reactionState = 'IDLE'; 
         let timeoutId = null; 
         let startTime = null; 
