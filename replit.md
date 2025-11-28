@@ -69,6 +69,28 @@ Desktop users can use:
 - Tailwind CSS loaded from CDN (suitable for this static app)
 - No build step required - all assets are inline or loaded from CDN
 
+## GitHub Export Ready
+
+This project is now configured for GitHub with:
+- Comprehensive README.md for documentation
+- Updated .gitignore excluding large video files (*.mp4)
+- Clean project structure suitable for open source
+- Python server for local/Replit hosting
+
+## How to Push to GitHub
+
+1. **Create a GitHub repository** at https://github.com/new
+2. **Copy the repository URL** (HTTPS or SSH)
+3. **In Replit terminal**, run:
+   ```bash
+   git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+   git branch -M main
+   git add .
+   git commit -m "Initial commit: Interactive Grid Game with video backgrounds"
+   git push -u origin main
+   ```
+4. **Add video files** to GitHub Releases (optional, for download)
+
 ## Recent Changes (Nov 28, 2025)
 - Imported from GitHub and set up for Replit environment
 - Renamed README.md to index.html
@@ -77,5 +99,7 @@ Desktop users can use:
 - Configured workflow and deployment settings
 - Added .gitignore for Python and Replit files
 - Added mobile touch controls for Grid Game (W, S, GO! buttons)
-- Added video background (background-video.mp4) with sound toggle button
-- Sound toggle button in top-right corner allows users to mute/unmute background video audio
+- Added menu video background with sound toggle button
+- Added practice mode video background with separate sound toggle
+- Created comprehensive README.md for GitHub
+- Updated .gitignore to exclude video files and temporary assets

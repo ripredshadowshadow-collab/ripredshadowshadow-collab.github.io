@@ -27,3 +27,14 @@ wheels/
 .config/
 .upm/
 venv/
+
+# Large video files (add these to GitHub Releases instead)
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Temporary files
+attached_assets/
+.DS_Store
+*.tmp
