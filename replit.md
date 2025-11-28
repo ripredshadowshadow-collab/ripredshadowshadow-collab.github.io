@@ -92,10 +92,6 @@ This project is now configured for GitHub with:
 4. **Add video files** to GitHub Releases (optional, for download)
 
 ## Recent Changes (Nov 28, 2025)
-- Decreased trap difficulty in Grid Game:
-  - Reduced trap spawning frequency (every 15 points instead of 10)
-  - Increased safe lanes per trap pattern (2-3 safe lanes instead of 1-2)
-  - Result: Players have more time between trap waves and more escape routes
 - Enhanced car visuals with more realistic SVG designs:
   - **AE86**: Added door lines, mirrors, multi-layered wheels with rims, windshields, headlights, taillights, body highlight, and depth shadows
   - **GT-R**: Added iconic gold stripe, hood vents/scoops, aggressive double headlights, sport rims with star pattern, metallic shine effect, and realistic body proportions
