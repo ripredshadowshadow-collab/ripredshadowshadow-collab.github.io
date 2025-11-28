@@ -50,8 +50,16 @@
             height: 100%;
             object-fit: cover; 
             z-index: 0; 
-            background-color: #333; 
-            filter: brightness(0.6) grayscale(0.1); 
+            background-color: #000; 
+            filter: brightness(0.6) grayscale(0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        
+        /* Show video on menu, black background otherwise */
+        body {
+            background-color: #000;
         }
 
         /* 2. Main Content Container Styling for Readability */
@@ -76,6 +84,10 @@
         .page-visible {
             display: block;
             opacity: 1;
+        }
+        /* Hide map selection view */
+        #map-selection-view {
+            display: none !important;
         }
         .duration-btn {
             @apply shadow-sm transition-all duration-150;
@@ -457,7 +469,7 @@
 
                     <!-- Action Buttons -->
                     <div class="space-y-3">
-                        <button onclick="showMapSelectionView()" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors shadow-md">
+                        <button onclick="startRace('random')" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors shadow-md">
                             Start Grid Race
                         </button>
                         <button onclick="showCarSelectView()" class="w-full bg-gray-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors shadow-md">
@@ -751,14 +763,17 @@
             }
 
             const pages = document.querySelectorAll('.page');
+            const backgroundVideo = document.getElementById('background-video');
             
-            // 2. Hide/Show Menu and Title
+            // 2. Hide/Show Menu and Title + Background Video
             if (pageId === 'menu') {
                 menuNav.classList.remove('hidden', 'opacity-0');
                 mainTitle.classList.remove('hidden', 'opacity-0');
+                if (backgroundVideo) backgroundVideo.style.opacity = '1';
             } else {
                 menuNav.classList.add('hidden', 'opacity-0');
                 mainTitle.classList.add('hidden', 'opacity-0');
+                if (backgroundVideo) backgroundVideo.style.opacity = '0';
             }
             
             // 3. Hide all content pages
