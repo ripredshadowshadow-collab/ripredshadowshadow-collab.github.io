@@ -990,74 +990,93 @@
                     <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                         <defs>
                             <linearGradient id="ae86-body" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#FACC15;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#F0B700;stop-opacity:1" />
+                                <stop offset="0%" style="stop-color:#FAFAFA;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#E8E8E8;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="ae86-hood" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#2A2A2A;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1A1A1A;stop-opacity:1" />
                             </linearGradient>
                         </defs>
                         
-                        <!-- Shadows/Depth -->
-                        <ellipse cx="20" cy="59" rx="6" ry="1.5" fill="#000" opacity="0.25"/>
-                        <ellipse cx="73" cy="59" rx="6" ry="1.5" fill="#000" opacity="0.25"/>
+                        <!-- Ground shadows -->
+                        <ellipse cx="22" cy="58" rx="7" ry="1.8" fill="#000" opacity="0.2"/>
+                        <ellipse cx="78" cy="58" rx="7" ry="1.8" fill="#000" opacity="0.2"/>
                         
-                        <!-- Main Body (Boxy AE86 style with curves) -->
-                        <path d="M 14 25 L 82 23 L 88 38 L 12 40 Q 11 32 14 25" fill="url(#ae86-body)" stroke="#B8860B" stroke-width="0.6"/>
+                        <!-- Main Body - Panda Trueno White -->
+                        <path d="M 8 28 L 12 24 L 88 22 L 92 26 L 92 38 L 8 40 Z" fill="url(#ae86-body)" stroke="#CCC" stroke-width="0.5"/>
                         
-                        <!-- Body side shadow -->
-                        <path d="M 14 35 L 88 35 L 86 38 L 12 40 Z" fill="#000" opacity="0.08"/>
+                        <!-- Black Hood (Panda style) -->
+                        <path d="M 75 22 L 92 24 L 92 32 L 75 30 Z" fill="url(#ae86-hood)" stroke="#111" stroke-width="0.3"/>
                         
-                        <!-- Hood vents -->
-                        <rect x="15" y="26" width="1.5" height="6" fill="#999" opacity="0.6" rx="0.5"/>
-                        <rect x="19" y="26" width="1.5" height="6" fill="#999" opacity="0.6" rx="0.5"/>
+                        <!-- Black Front Bumper -->
+                        <path d="M 88 26 L 95 25 L 95 37 L 88 38 Z" fill="#1A1A1A" stroke="#111" stroke-width="0.3"/>
                         
-                        <!-- Cabin/Roof (Dark with curve) -->
-                        <path d="M 32 23 Q 58 18 76 24 L 74 33 Q 58 32 34 33 Z" fill="#1A1A2E" stroke="#0F0F1E" stroke-width="0.4"/>
+                        <!-- Black Rear Bumper -->
+                        <path d="M 5 27 L 10 26 L 10 40 L 5 39 Z" fill="#1A1A1A" stroke="#111" stroke-width="0.3"/>
                         
-                        <!-- Windshield (front - curved) -->
-                        <path d="M 33 24 Q 40 20 46 21 L 44 33 Q 39 33 32 32 Z" fill="#87CEEB" opacity="0.7"/>
+                        <!-- Body lower trim (black) -->
+                        <path d="M 10 36 L 88 35 L 88 40 L 8 40 Z" fill="#222" opacity="0.6"/>
                         
-                        <!-- Windshield (rear - curved) -->
-                        <path d="M 54 25 Q 67 23 75 24 L 74 32 Q 68 34 55 33 Z" fill="#87CEEB" opacity="0.5"/>
+                        <!-- Boxy Cabin/Roof (characteristic AE86 shape) -->
+                        <path d="M 28 24 L 32 18 L 68 17 L 74 22 L 72 32 L 30 33 Z" fill="#1A1A2E" stroke="#0F0F1E" stroke-width="0.4"/>
                         
-                        <!-- Side mirrors -->
-                        <circle cx="30" cy="18" r="1.5" fill="#222"/>
-                        <circle cx="78" cy="18" r="1.5" fill="#222"/>
+                        <!-- Front Windshield (steep angle - 80s style) -->
+                        <path d="M 32 20 L 38 17 L 48 17 L 46 32 L 30 32 Z" fill="#6BB8E8" opacity="0.8" stroke="#444" stroke-width="0.3"/>
+                        
+                        <!-- Rear Windshield -->
+                        <path d="M 52 18 L 68 18 L 72 24 L 70 32 L 54 32 Z" fill="#6BB8E8" opacity="0.6" stroke="#444" stroke-width="0.3"/>
+                        
+                        <!-- Side Windows -->
+                        <path d="M 47 19 L 52 19 L 52 31 L 47 31 Z" fill="#6BB8E8" opacity="0.5"/>
+                        
+                        <!-- Pop-up Headlights (signature AE86 feature) -->
+                        <rect x="83" y="18" width="5" height="4" fill="#222" rx="1"/>
+                        <circle cx="85.5" cy="20" r="1.8" fill="#FFFDE7"/>
+                        <circle cx="85.5" cy="20" r="1.2" fill="#FFF9C4" opacity="0.8"/>
+                        <rect x="83" y="28" width="5" height="4" fill="#222" rx="1"/>
+                        <circle cx="85.5" cy="30" r="1.8" fill="#FFFDE7"/>
+                        <circle cx="85.5" cy="30" r="1.2" fill="#FFF9C4" opacity="0.8"/>
+                        
+                        <!-- Side mirrors (black) -->
+                        <rect x="28" y="16" width="3" height="2" fill="#1A1A1A" rx="0.5"/>
                         
                         <!-- Door line -->
-                        <line x1="54" y1="23" x2="54" y2="40" stroke="#888" stroke-width="0.4" opacity="0.7"/>
+                        <line x1="50" y1="22" x2="50" y2="38" stroke="#AAA" stroke-width="0.4"/>
                         
-                        <!-- Front bumper detail -->
-                        <rect x="82" y="28" width="6" height="10" fill="#C0A000" stroke="#996600" stroke-width="0.3" rx="1"/>
+                        <!-- Door handle -->
+                        <rect x="42" y="28" width="3" height="1" fill="#888" rx="0.3"/>
+                        <rect x="56" y="28" width="3" height="1" fill="#888" rx="0.3"/>
                         
-                        <!-- Headlights (pop-up style) -->
-                        <circle cx="85" cy="27" r="1.8" fill="#FFF"/>
-                        <circle cx="85" cy="27" r="1.3" fill="#FFFACD" opacity="0.6"/>
-                        <circle cx="85" cy="35" r="1.8" fill="#FFF"/>
-                        <circle cx="85" cy="35" r="1.3" fill="#FFFACD" opacity="0.6"/>
+                        <!-- Iconic AE86 side stripe (black) -->
+                        <path d="M 12 30 L 75 28 L 75 32 L 12 34 Z" fill="#1A1A1A" opacity="0.15"/>
                         
-                        <!-- Rear lights/bumper -->
-                        <rect x="10" y="27" width="3" height="3" fill="#FF3333" rx="0.5"/>
-                        <rect x="10" y="34" width="3" height="3" fill="#FF3333" rx="0.5"/>
-                        <rect x="10" y="24" width="3" height="2" fill="#FF9999" rx="0.5"/>
-                        <rect x="10" y="38" width="3" height="2" fill="#FF9999" rx="0.5"/>
+                        <!-- Rear Taillights (horizontal bar style) -->
+                        <rect x="6" y="28" width="3" height="5" fill="#CC0000" rx="0.5"/>
+                        <rect x="6" y="35" width="3" height="3" fill="#FF4444" opacity="0.7" rx="0.3"/>
                         
-                        <!-- Front wheel (visible) -->
-                        <circle cx="20" cy="48" r="8" fill="#0D0D0D" stroke="#1A1A1A" stroke-width="0.3"/>
-                        <circle cx="20" cy="48" r="6" fill="#1A1A1A"/>
-                        <circle cx="20" cy="48" r="4" fill="#222"/>
-                        <circle cx="20" cy="48" r="2.5" fill="#333"/>
-                        <line x1="20" y1="45.5" x2="20" y2="50.5" stroke="#555" stroke-width="0.5"/>
-                        <line x1="17" y1="48" x2="23" y2="48" stroke="#555" stroke-width="0.5"/>
+                        <!-- Front Wheel (Watanabe-style 8-spoke) -->
+                        <circle cx="22" cy="48" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="22" cy="48" r="7" fill="#2A2A2A"/>
+                        <circle cx="22" cy="48" r="5" fill="#3A3A3A"/>
+                        <circle cx="22" cy="48" r="2.5" fill="#C0C0C0"/>
+                        <line x1="22" y1="43" x2="22" y2="53" stroke="#777" stroke-width="1"/>
+                        <line x1="17" y1="48" x2="27" y2="48" stroke="#777" stroke-width="1"/>
+                        <line x1="18.5" y1="44.5" x2="25.5" y2="51.5" stroke="#777" stroke-width="0.8"/>
+                        <line x1="25.5" y1="44.5" x2="18.5" y2="51.5" stroke="#777" stroke-width="0.8"/>
                         
-                        <!-- Rear wheel (visible) -->
-                        <circle cx="80" cy="48" r="8" fill="#0D0D0D" stroke="#1A1A1A" stroke-width="0.3"/>
-                        <circle cx="80" cy="48" r="6" fill="#1A1A1A"/>
-                        <circle cx="80" cy="48" r="4" fill="#222"/>
-                        <circle cx="80" cy="48" r="2.5" fill="#333"/>
-                        <line x1="80" y1="45.5" x2="80" y2="50.5" stroke="#555" stroke-width="0.5"/>
-                        <line x1="77" y1="48" x2="83" y2="48" stroke="#555" stroke-width="0.5"/>
+                        <!-- Rear Wheel -->
+                        <circle cx="78" cy="48" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="78" cy="48" r="7" fill="#2A2A2A"/>
+                        <circle cx="78" cy="48" r="5" fill="#3A3A3A"/>
+                        <circle cx="78" cy="48" r="2.5" fill="#C0C0C0"/>
+                        <line x1="78" y1="43" x2="78" y2="53" stroke="#777" stroke-width="1"/>
+                        <line x1="73" y1="48" x2="83" y2="48" stroke="#777" stroke-width="1"/>
+                        <line x1="74.5" y1="44.5" x2="81.5" y2="51.5" stroke="#777" stroke-width="0.8"/>
+                        <line x1="81.5" y1="44.5" x2="74.5" y2="51.5" stroke="#777" stroke-width="0.8"/>
                         
-                        <!-- Body shine/reflection -->
-                        <ellipse cx="50" cy="28" rx="28" ry="5" fill="#FFF" opacity="0.12"/>
+                        <!-- Body shine -->
+                        <ellipse cx="45" cy="26" rx="20" ry="4" fill="#FFF" opacity="0.15"/>
                     </svg>
                 `
             },
@@ -1074,82 +1093,113 @@
                     <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                         <defs>
                             <linearGradient id="gtr-body" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#1B35A0;stop-opacity:1" />
+                                <stop offset="0%" style="stop-color:#2E5CB8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1A3D8F;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="gtr-hood" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3366CC;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#264D99;stop-opacity:1" />
                             </linearGradient>
                         </defs>
                         
-                        <!-- Shadows/Depth -->
-                        <ellipse cx="19" cy="59" rx="6.5" ry="1.5" fill="#000" opacity="0.25"/>
-                        <ellipse cx="75" cy="59" rx="6.5" ry="1.5" fill="#000" opacity="0.25"/>
+                        <!-- Ground shadows -->
+                        <ellipse cx="20" cy="58" rx="8" ry="2" fill="#000" opacity="0.25"/>
+                        <ellipse cx="80" cy="58" rx="8" ry="2" fill="#000" opacity="0.25"/>
                         
-                        <!-- Main Body (Aggressive, Blue) -->
-                        <path d="M 9 22 L 88 20 L 92 38 L 5 40 Q 6 30 9 22" fill="url(#gtr-body)" stroke="#0D2DA0" stroke-width="0.6"/>
+                        <!-- Main Body - Bayside Blue (signature R34 color) -->
+                        <path d="M 5 26 L 10 22 L 90 20 L 95 24 L 95 38 L 5 40 Z" fill="url(#gtr-body)" stroke="#1A3366" stroke-width="0.5"/>
                         
-                        <!-- Body shadow/depth -->
-                        <path d="M 9 34 L 92 33 L 90 38 L 8 40 Z" fill="#000" opacity="0.1"/>
+                        <!-- Hood with bulge (NACA duct style) -->
+                        <path d="M 72 20 L 90 20 L 95 24 L 95 30 L 72 28 Z" fill="url(#gtr-hood)" stroke="#1A3366" stroke-width="0.3"/>
                         
-                        <!-- Hood vents/scoops (deep) -->
-                        <rect x="10" y="23" width="1.8" height="7" fill="#000" opacity="0.5" rx="0.5"/>
-                        <rect x="14" y="23" width="1.8" height="7" fill="#000" opacity="0.5" rx="0.5"/>
+                        <!-- Hood vents (functional NACA ducts) -->
+                        <path d="M 78 22 L 82 21 L 82 26 L 78 27 Z" fill="#1A2A50" opacity="0.7"/>
+                        <path d="M 84 21 L 88 20 L 88 25 L 84 26 Z" fill="#1A2A50" opacity="0.7"/>
                         
-                        <!-- Cabin/Roof (Dark with aggressive line) -->
-                        <path d="M 31 20 Q 60 16 80 22 L 78 34 Q 60 36 33 35 Z" fill="#0F0F1E" stroke="#000" stroke-width="0.4"/>
+                        <!-- Front Bumper (aggressive R34 style) -->
+                        <path d="M 90 24 L 98 23 L 98 37 L 90 38 Z" fill="#1A3D8F" stroke="#102A66" stroke-width="0.3"/>
                         
-                        <!-- Front windshield (angled) -->
-                        <path d="M 32 22 Q 42 18 50 19 L 47 35 Q 39 35 30 33 Z" fill="#4A90E2" opacity="0.75"/>
+                        <!-- Front air intake (large opening) -->
+                        <rect x="91" y="30" width="5" height="6" fill="#0A0A0A" rx="0.5"/>
                         
-                        <!-- Rear windshield (sloped) -->
-                        <path d="M 55 23 Q 71 20 80 22 L 78 34 Q 70 37 56 35 Z" fill="#4A90E2" opacity="0.55"/>
+                        <!-- Rear section with wing mount -->
+                        <path d="M 3 25 L 8 24 L 8 40 L 3 39 Z" fill="#1A3D8F" stroke="#102A66" stroke-width="0.3"/>
                         
-                        <!-- GT-R Iconic Gold Stripe -->
-                        <path d="M 31 26 Q 60 24 80 26" stroke="#FFD700" stroke-width="1.2" opacity="0.8" fill="none"/>
+                        <!-- Massive GT-R rear wing (iconic) -->
+                        <rect x="1" y="16" width="2" height="3" fill="#1A1A1A"/>
+                        <rect x="0" y="14" width="4" height="3" fill="#1A1A1A" rx="0.5"/>
+                        <path d="M -1 14 L 5 12 L 5 15 L -1 17 Z" fill="#222" stroke="#111" stroke-width="0.3"/>
                         
-                        <!-- Side mirrors (aggressive) -->
-                        <rect x="28" y="16" width="2" height="6" fill="#1A1A1A" rx="0.8"/>
-                        <rect x="79" y="16" width="2" height="6" fill="#1A1A1A" rx="0.8"/>
+                        <!-- Cabin/Roof (boxy R34 shape) -->
+                        <path d="M 28 22 L 34 16 L 66 15 L 72 20 L 70 32 L 30 33 Z" fill="#101828" stroke="#0A1020" stroke-width="0.4"/>
                         
-                        <!-- Door line (racing style) -->
-                        <line x1="58" y1="20" x2="58" y2="40" stroke="#777" stroke-width="0.5" opacity="0.8"/>
+                        <!-- Front Windshield (steep angle) -->
+                        <path d="M 34 18 L 42 15 L 52 15 L 50 32 L 32 32 Z" fill="#5A9FD4" opacity="0.8" stroke="#333" stroke-width="0.3"/>
                         
-                        <!-- Aggressive front bumper -->
-                        <path d="M 87 26 L 95 25 L 95 35 L 87 34 Z" fill="#0D1B70" stroke="#000" stroke-width="0.3"/>
+                        <!-- Rear Windshield -->
+                        <path d="M 54 16 L 66 16 L 70 22 L 68 32 L 56 32 Z" fill="#5A9FD4" opacity="0.6" stroke="#333" stroke-width="0.3"/>
                         
-                        <!-- Dual Headlights (GT-R signature) -->
-                        <circle cx="91" cy="24" r="2" fill="#FFF" stroke="#FFD700" stroke-width="0.4"/>
-                        <circle cx="91" cy="24" r="1.2" fill="#FFFACD" opacity="0.7"/>
-                        <circle cx="91" cy="32" r="2" fill="#FFF" stroke="#FFD700" stroke-width="0.4"/>
-                        <circle cx="91" cy="32" r="1.2" fill="#FFFACD" opacity="0.7"/>
-                        <circle cx="91" cy="28" r="1.5" fill="#FFF"/>
-                        <circle cx="91" cy="28" r="0.8" fill="#FFFACD" opacity="0.6"/>
+                        <!-- Side Window -->
+                        <path d="M 51 17 L 54 17 L 54 31 L 51 31 Z" fill="#5A9FD4" opacity="0.5"/>
                         
-                        <!-- Rear lights/Taillights (4-point LED style) -->
-                        <rect x="8" y="25" width="2.5" height="2.5" fill="#FF1111" rx="0.3"/>
-                        <rect x="8" y="33" width="2.5" height="2.5" fill="#FF1111" rx="0.3"/>
-                        <circle cx="9.25" cy="26.2" r="0.8" fill="#FF6666" opacity="0.8"/>
-                        <circle cx="9.25" cy="34.2" r="0.8" fill="#FF6666" opacity="0.8"/>
+                        <!-- GT-R badge line (signature side stripe) -->
+                        <path d="M 8 30 L 90 28" stroke="#C0C0C0" stroke-width="0.8" opacity="0.5"/>
                         
-                        <!-- Rear wing (subtle but visible) -->
-                        <path d="M 6 20 L 5 22 L 5 38 L 6 40 Z" fill="#1A1A1A" opacity="0.9"/>
+                        <!-- Side mirrors (carbon fiber style) -->
+                        <rect x="28" y="14" width="3" height="3" fill="#1A1A1A" rx="0.5"/>
                         
-                        <!-- Front wheel with star-pattern sport rims (visible) -->
-                        <circle cx="19" cy="49" r="8" fill="#0D0D0D" stroke="#222" stroke-width="0.4"/>
-                        <circle cx="19" cy="49" r="5.5" fill="#1A1A1A"/>
-                        <circle cx="19" cy="49" r="3.5" fill="#252525"/>
-                        <circle cx="19" cy="49" r="1.8" fill="#444"/>
-                        <polygon points="19,44 20.5,46.5 19,49 17.5,46.5" fill="#555"/>
-                        <polygon points="22,49 20,50.5 19,52 17,50.5" fill="#555"/>
+                        <!-- Door line -->
+                        <line x1="52" y1="20" x2="52" y2="38" stroke="#1A3366" stroke-width="0.5"/>
                         
-                        <!-- Rear wheel with star-pattern sport rims (visible) -->
-                        <circle cx="82" cy="49" r="8" fill="#0D0D0D" stroke="#222" stroke-width="0.4"/>
-                        <circle cx="82" cy="49" r="5.5" fill="#1A1A1A"/>
-                        <circle cx="82" cy="49" r="3.5" fill="#252525"/>
-                        <circle cx="82" cy="49" r="1.8" fill="#444"/>
-                        <polygon points="82,44 83.5,46.5 82,49 80.5,46.5" fill="#555"/>
-                        <polygon points="85,49 83,50.5 82,52 80,50.5" fill="#555"/>
+                        <!-- Door handle (chrome) -->
+                        <rect x="44" y="27" width="3" height="1.2" fill="#AAA" rx="0.3"/>
+                        <rect x="58" y="27" width="3" height="1.2" fill="#AAA" rx="0.3"/>
                         
-                        <!-- Metallic shine (Godzilla effect) -->
-                        <ellipse cx="50" cy="28" rx="32" ry="6" fill="#FFF" opacity="0.08"/>
+                        <!-- Quad Round Headlights (R34 signature) -->
+                        <circle cx="93" cy="25" r="2.2" fill="#FFFDE7" stroke="#FFD700" stroke-width="0.4"/>
+                        <circle cx="93" cy="25" r="1.4" fill="#FFF" opacity="0.9"/>
+                        <circle cx="93" cy="32" r="2.2" fill="#FFFDE7" stroke="#FFD700" stroke-width="0.4"/>
+                        <circle cx="93" cy="32" r="1.4" fill="#FFF" opacity="0.9"/>
+                        
+                        <!-- Front turn signals -->
+                        <rect x="96" y="26" width="1.5" height="2" fill="#FFB300" opacity="0.8" rx="0.3"/>
+                        <rect x="96" y="30" width="1.5" height="2" fill="#FFB300" opacity="0.8" rx="0.3"/>
+                        
+                        <!-- Iconic R34 Round Taillights (4 circles) -->
+                        <circle cx="5" cy="27" r="2" fill="#CC0000"/>
+                        <circle cx="5" cy="27" r="1.2" fill="#FF3333" opacity="0.8"/>
+                        <circle cx="5" cy="34" r="2" fill="#CC0000"/>
+                        <circle cx="5" cy="34" r="1.2" fill="#FF3333" opacity="0.8"/>
+                        
+                        <!-- Lower body accent -->
+                        <path d="M 8 36 L 90 35 L 90 40 L 5 40 Z" fill="#0D1F4D" opacity="0.5"/>
+                        
+                        <!-- Front Wheel (NISMO LM GT4 style - 6 spoke) -->
+                        <circle cx="20" cy="49" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="20" cy="49" r="7" fill="#252525"/>
+                        <circle cx="20" cy="49" r="5.5" fill="#333"/>
+                        <circle cx="20" cy="49" r="2.5" fill="#B8860B"/>
+                        <path d="M 20 42 L 21 46 L 20 49 L 19 46 Z" fill="#555"/>
+                        <path d="M 26 46 L 23 48 L 20 49 L 22 46 Z" fill="#555"/>
+                        <path d="M 26 52 L 23 50 L 20 49 L 22 52 Z" fill="#555"/>
+                        <path d="M 20 56 L 19 52 L 20 49 L 21 52 Z" fill="#555"/>
+                        <path d="M 14 52 L 17 50 L 20 49 L 18 52 Z" fill="#555"/>
+                        <path d="M 14 46 L 17 48 L 20 49 L 18 46 Z" fill="#555"/>
+                        
+                        <!-- Rear Wheel -->
+                        <circle cx="80" cy="49" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="80" cy="49" r="7" fill="#252525"/>
+                        <circle cx="80" cy="49" r="5.5" fill="#333"/>
+                        <circle cx="80" cy="49" r="2.5" fill="#B8860B"/>
+                        <path d="M 80 42 L 81 46 L 80 49 L 79 46 Z" fill="#555"/>
+                        <path d="M 86 46 L 83 48 L 80 49 L 82 46 Z" fill="#555"/>
+                        <path d="M 86 52 L 83 50 L 80 49 L 82 52 Z" fill="#555"/>
+                        <path d="M 80 56 L 79 52 L 80 49 L 81 52 Z" fill="#555"/>
+                        <path d="M 74 52 L 77 50 L 80 49 L 78 52 Z" fill="#555"/>
+                        <path d="M 74 46 L 77 48 L 80 49 L 78 46 Z" fill="#555"/>
+                        
+                        <!-- Metallic shine -->
+                        <ellipse cx="50" cy="26" rx="28" ry="5" fill="#FFF" opacity="0.1"/>
                     </svg>
                 `
             },
