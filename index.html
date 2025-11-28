@@ -847,12 +847,23 @@
 
             const pages = document.querySelectorAll('.page');
             const backgroundVideo = document.getElementById('background-video');
+            const practiceVideo = document.getElementById('practice-video');
             
             // 2. Hide/Show Menu and Title + Background Video
             if (pageId === 'menu') {
                 menuNav.classList.remove('hidden', 'opacity-0');
                 mainTitle.classList.remove('hidden', 'opacity-0');
-                if (backgroundVideo) backgroundVideo.style.opacity = '1';
+                if (backgroundVideo) {
+                    backgroundVideo.style.opacity = '1';
+                    backgroundVideo.play();
+                }
+                // Stop practice video when returning to menu
+                if (practiceVideo) {
+                    practiceVideo.pause();
+                    practiceVideo.style.opacity = '0';
+                }
+                const practiceBtn = document.getElementById('practice-sound-toggle');
+                if (practiceBtn) practiceBtn.classList.remove('visible');
             } else {
                 menuNav.classList.add('hidden', 'opacity-0');
                 mainTitle.classList.add('hidden', 'opacity-0');
@@ -887,9 +898,14 @@
             mapSelectionView.classList.add('hidden'); 
             drivingView.classList.add('hidden'); // Hide driving view
             carSelectView.classList.remove('hidden');
-            // Show practice video and button
+            // Show practice video and button, hide menu video
             const practiceVideo = document.getElementById('practice-video');
             const practiceBtn = document.getElementById('practice-sound-toggle');
+            const backgroundVideo = document.getElementById('background-video');
+            if (backgroundVideo) {
+                backgroundVideo.pause();
+                backgroundVideo.style.opacity = '0';
+            }
             if (practiceVideo) practiceVideo.style.opacity = '1';
             if (practiceBtn) practiceBtn.classList.add('visible');
             if (practiceVideo) practiceVideo.play();
@@ -905,9 +921,14 @@
             mapSelectionView.classList.add('hidden'); 
             drivingView.classList.add('hidden'); // Hide driving view
             carDetailsView.classList.remove('hidden');
-            // Show practice video and button
+            // Show practice video and button, hide menu video
             const practiceVideo = document.getElementById('practice-video');
             const practiceBtn = document.getElementById('practice-sound-toggle');
+            const backgroundVideo = document.getElementById('background-video');
+            if (backgroundVideo) {
+                backgroundVideo.pause();
+                backgroundVideo.style.opacity = '0';
+            }
             if (practiceVideo) practiceVideo.style.opacity = '1';
             if (practiceBtn) practiceBtn.classList.add('visible');
             if (practiceVideo) practiceVideo.play();
@@ -928,21 +949,23 @@
             mapSelectionView.classList.add('hidden'); 
             carSelectView.classList.add('hidden');
             drivingView.classList.remove('hidden');
-            // Hide practice video and button
+            // Hide practice video and button (game takes over, black background)
             const practiceVideo = document.getElementById('practice-video');
             const practiceBtn = document.getElementById('practice-sound-toggle');
-            if (practiceVideo) practiceVideo.style.opacity = '0';
+            if (practiceVideo) {
+                practiceVideo.pause();
+                practiceVideo.style.opacity = '0';
+            }
             if (practiceBtn) practiceBtn.classList.remove('visible');
-            if (practiceVideo) practiceVideo.pause();
             
             // Inject the selected car's SVG before starting the game
             CarGame.init(currentSelectedCarId); 
         }
         
-        /** End the game and return to map selection */
+        /** End the game and return to car details view */
         function endRacePractice() {
             CarGame.stop();
-            showMapSelectionView();
+            showCarDetailsView();
         }
 
 

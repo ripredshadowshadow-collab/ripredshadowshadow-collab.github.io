@@ -101,5 +101,12 @@ This project is now configured for GitHub with:
 - Added mobile touch controls for Grid Game (W, S, GO! buttons)
 - Added menu video background with sound toggle button
 - Added practice mode video background with separate sound toggle
+- Implemented smart background video management:
+  - Menu video plays on main menu
+  - Menu video pauses when entering Practice mode
+  - Practice video plays during car selection and details views
+  - Practice video pauses when starting the game
+  - All videos resume/pause correctly when navigating between screens
 - Created comprehensive README.md for GitHub
 - Updated .gitignore to exclude video files and temporary assets
+- Project is GitHub-ready for export
