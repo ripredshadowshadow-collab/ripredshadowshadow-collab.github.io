@@ -1216,77 +1216,111 @@
                     <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                         <defs>
                             <linearGradient id="brz-body" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#423FB0;stop-opacity:1" />
+                                <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#991B1B;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="brz-roof" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1F2937;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#111827;stop-opacity:1" />
                             </linearGradient>
                         </defs>
                         
-                        <!-- Shadows/Depth -->
-                        <ellipse cx="20" cy="59" rx="6" ry="1.5" fill="#000" opacity="0.25"/>
-                        <ellipse cx="76" cy="59" rx="6" ry="1.5" fill="#000" opacity="0.25"/>
+                        <!-- Ground shadows -->
+                        <ellipse cx="20" cy="58" rx="7" ry="1.8" fill="#000" opacity="0.2"/>
+                        <ellipse cx="78" cy="58" rx="7" ry="1.8" fill="#000" opacity="0.2"/>
                         
-                        <!-- Main Body (Sleek, Indigo with curves) -->
-                        <path d="M 13 24 Q 15 20 50 19 Q 85 20 88 24 L 86 37 Q 50 39 14 37 Z" fill="url(#brz-body)" stroke="#3730A3" stroke-width="0.6"/>
+                        <!-- Main Body - Racing Red (characteristic BRZ color) -->
+                        <path d="M 8 26 L 12 22 L 88 20 L 94 24 L 94 38 L 8 40 Z" fill="url(#brz-body)" stroke="#8B0000" stroke-width="0.5"/>
                         
-                        <!-- Lower body accent stripe -->
-                        <path d="M 13 33 L 88 32 L 86 37 L 14 37 Z" fill="#3730A3" opacity="0.7"/>
+                        <!-- Sporty hood bulge -->
+                        <path d="M 70 20 L 88 20 L 94 24 L 94 30 L 70 28 Z" fill="#B91C1C" opacity="0.8"/>
                         
-                        <!-- Cabin/Roof (Smooth curves - signature BRZ style) -->
-                        <path d="M 32 21 Q 50 16 68 21 Q 75 24 76 33 Q 50 37 24 33 Q 25 26 32 21 Z" fill="#5B7FD1" opacity="0.75"/>
+                        <!-- Front bumper (aggressive but refined) -->
+                        <path d="M 88 24 L 96 23 L 96 37 L 88 38 Z" fill="#1A1A1A" stroke="#000" stroke-width="0.3"/>
                         
-                        <!-- Windshield front (angled for sportiness) -->
-                        <path d="M 33 24 Q 42 19 48 20 L 46 34 Q 40 34 32 31 Z" fill="#87CEEB" opacity="0.75"/>
+                        <!-- Front grille/air intake (trademark BRZ styling) -->
+                        <path d="M 89 28 L 94 27 L 94 33 L 89 34 Z" fill="#333" opacity="0.8"/>
+                        <line x1="89" y1="29" x2="94" y2="29" stroke="#555" stroke-width="0.4"/>
+                        <line x1="89" y1="31" x2="94" y2="31" stroke="#555" stroke-width="0.4"/>
                         
-                        <!-- Windshield rear (smooth transition) -->
-                        <path d="M 52 23 Q 68 21 75 25 L 74 33 Q 68 36 54 34 Z" fill="#87CEEB" opacity="0.55"/>
+                        <!-- Lower front splitter (modern sports car detail) -->
+                        <path d="M 88 34 L 95 33 L 95 37 L 88 38 Z" fill="#000" opacity="0.6"/>
                         
-                        <!-- Side mirrors (sleek) -->
-                        <ellipse cx="30" cy="18" rx="1.5" ry="2" fill="#1A1A1A"/>
-                        <ellipse cx="78" cy="18" rx="1.5" ry="2" fill="#1A1A1A"/>
+                        <!-- Rear bumper -->
+                        <path d="M 5 27 L 10 26 L 10 40 L 5 39 Z" fill="#1A1A1A" stroke="#000" stroke-width="0.3"/>
                         
-                        <!-- Door line (clean) -->
-                        <line x1="54" y1="21" x2="54" y2="37" stroke="#777" stroke-width="0.4" opacity="0.7"/>
+                        <!-- Cabin/Roof (flowing design - signature BRZ curves) -->
+                        <path d="M 28 22 L 34 16 L 66 14 L 72 20 L 70 32 L 30 33 Z" fill="url(#brz-roof)" stroke="#000" stroke-width="0.4"/>
                         
-                        <!-- Front bumper (simple clean lines) -->
-                        <path d="M 83 27 L 90 26 L 90 34 L 83 34 Z" fill="#3730A3" stroke="#2A2584" stroke-width="0.3"/>
+                        <!-- Front Windshield (modern angle) -->
+                        <path d="M 34 18 L 42 14 L 52 14 L 50 32 L 32 32 Z" fill="#5DADE2" opacity="0.8" stroke="#333" stroke-width="0.3"/>
                         
-                        <!-- Headlights (LED-style rounded) -->
-                        <circle cx="87" cy="26" r="2" fill="#FFF" stroke="#DDD" stroke-width="0.3"/>
-                        <circle cx="87" cy="26" r="1.2" fill="#FFFACD" opacity="0.7"/>
-                        <circle cx="87" cy="33" r="2" fill="#FFF" stroke="#DDD" stroke-width="0.3"/>
-                        <circle cx="87" cy="33" r="1.2" fill="#FFFACD" opacity="0.7"/>
+                        <!-- Rear Windshield -->
+                        <path d="M 54 15 L 66 15 L 70 20 L 68 32 L 56 32 Z" fill="#5DADE2" opacity="0.6" stroke="#333" stroke-width="0.3"/>
                         
-                        <!-- Rear taillights (clean squares) -->
-                        <rect x="11" y="27" width="2.2" height="2.2" fill="#DD1111" rx="0.3"/>
-                        <rect x="11" y="34" width="2.2" height="2.2" fill="#DD1111" rx="0.3"/>
-                        <circle cx="12.1" cy="28" r="0.6" fill="#FF4444" opacity="0.7"/>
-                        <circle cx="12.1" cy="35" r="0.6" fill="#FF4444" opacity="0.7"/>
+                        <!-- Side Window -->
+                        <path d="M 51 16 L 54 16 L 54 31 L 51 31 Z" fill="#5DADE2" opacity="0.5"/>
                         
-                        <!-- Brake light accents -->
-                        <rect x="11" y="24" width="2.2" height="1.8" fill="#FF6666" rx="0.3" opacity="0.6"/>
-                        <rect x="11" y="37" width="2.2" height="1.8" fill="#FF6666" rx="0.3" opacity="0.6"/>
+                        <!-- Iconic BRZ side stripe/shoulder line -->
+                        <path d="M 8 30 L 88 29" stroke="#FFB300" stroke-width="0.6" opacity="0.7"/>
                         
-                        <!-- Front wheel with lightweight design (visible) -->
-                        <circle cx="20" cy="49" r="8" fill="#0D0D0D" stroke="#1A1A1A" stroke-width="0.3"/>
-                        <circle cx="20" cy="49" r="5.5" fill="#1A1A1A"/>
-                        <circle cx="20" cy="49" r="3.5" fill="#222"/>
-                        <circle cx="20" cy="49" r="2" fill="#333"/>
-                        <!-- Mesh pattern -->
-                        <line x1="20" y1="46" x2="20" y2="52" stroke="#555" stroke-width="0.4"/>
-                        <line x1="17" y1="49" x2="23" y2="49" stroke="#555" stroke-width="0.4"/>
-                        <line x1="18" y1="47" x2="22" y2="51" stroke="#555" stroke-width="0.3" opacity="0.6"/>
+                        <!-- Side mirrors (sleek carbon-style) -->
+                        <rect x="28" y="14" width="3" height="3" fill="#1A1A1A" rx="0.5"/>
                         
-                        <!-- Rear wheel with lightweight design (visible) -->
-                        <circle cx="80" cy="49" r="8" fill="#0D0D0D" stroke="#1A1A1A" stroke-width="0.3"/>
-                        <circle cx="80" cy="49" r="5.5" fill="#1A1A1A"/>
-                        <circle cx="80" cy="49" r="3.5" fill="#222"/>
-                        <circle cx="80" cy="49" r="2" fill="#333"/>
-                        <line x1="80" y1="46" x2="80" y2="52" stroke="#555" stroke-width="0.4"/>
-                        <line x1="77" y1="49" x2="83" y2="49" stroke="#555" stroke-width="0.4"/>
-                        <line x1="78" y1="47" x2="82" y2="51" stroke="#555" stroke-width="0.3" opacity="0.6"/>
+                        <!-- Door line (clean and sporty) -->
+                        <line x1="52" y1="20" x2="52" y2="38" stroke="#666" stroke-width="0.4"/>
                         
-                        <!-- Metallic shine (premium feel) -->
-                        <ellipse cx="50" cy="27" rx="30" ry="6" fill="#FFF" opacity="0.1"/>
+                        <!-- Door handles (chrome accents) -->
+                        <rect x="44" y="27" width="3" height="1.2" fill="#AAA" rx="0.3"/>
+                        <rect x="58" y="27" width="3" height="1.2" fill="#AAA" rx="0.3"/>
+                        
+                        <!-- LED Headlights (modern angular design) -->
+                        <path d="M 87 22 L 94 21 L 94 26 L 87 27 Z" fill="#333"/>
+                        <circle cx="89" cy="23" r="1.5" fill="#FFFACD"/>
+                        <circle cx="92" cy="23" r="1.5" fill="#FFFACD"/>
+                        
+                        <path d="M 87 30 L 94 29 L 94 34 L 87 35 Z" fill="#333"/>
+                        <circle cx="89" cy="31" r="1.5" fill="#FFFACD"/>
+                        <circle cx="92" cy="31" r="1.5" fill="#FFFACD"/>
+                        
+                        <!-- Turn signals (amber) -->
+                        <circle cx="95" cy="24" r="1" fill="#FFB300" opacity="0.8"/>
+                        <circle cx="95" cy="32" r="1" fill="#FFB300" opacity="0.8"/>
+                        
+                        <!-- Rear taillights (modern LED bars) -->
+                        <rect x="5" y="26" width="2.5" height="7" fill="#CC0000" rx="0.5"/>
+                        <line x1="6.25" y1="28" x2="6.25" y2="30" stroke="#FF4444" stroke-width="0.6"/>
+                        <line x1="6.25" y1="31" x2="6.25" y2="33" stroke="#FF4444" stroke-width="0.6"/>
+                        
+                        <!-- Lower body accent (design continuity) -->
+                        <path d="M 8 36 L 88 35 L 88 40 L 5 40 Z" fill="#8B0000" opacity="0.4"/>
+                        
+                        <!-- Front Wheel (lightweight mesh pattern - BRZ style) -->
+                        <circle cx="20" cy="49" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="20" cy="49" r="7" fill="#2A2A2A"/>
+                        <circle cx="20" cy="49" r="5" fill="#333"/>
+                        <circle cx="20" cy="49" r="2.5" fill="#666"/>
+                        <line x1="20" y1="42" x2="20" y2="56" stroke="#777" stroke-width="0.8"/>
+                        <line x1="13" y1="49" x2="27" y2="49" stroke="#777" stroke-width="0.8"/>
+                        <line x1="15" y1="44" x2="25" y2="54" stroke="#777" stroke-width="0.6"/>
+                        <line x1="25" y1="44" x2="15" y2="54" stroke="#777" stroke-width="0.6"/>
+                        <line x1="16" y1="42" x2="24" y2="42" stroke="#555" stroke-width="0.4" opacity="0.5"/>
+                        <line x1="16" y1="56" x2="24" y2="56" stroke="#555" stroke-width="0.4" opacity="0.5"/>
+                        
+                        <!-- Rear Wheel -->
+                        <circle cx="80" cy="49" r="9" fill="#1A1A1A" stroke="#0D0D0D" stroke-width="0.5"/>
+                        <circle cx="80" cy="49" r="7" fill="#2A2A2A"/>
+                        <circle cx="80" cy="49" r="5" fill="#333"/>
+                        <circle cx="80" cy="49" r="2.5" fill="#666"/>
+                        <line x1="80" y1="42" x2="80" y2="56" stroke="#777" stroke-width="0.8"/>
+                        <line x1="73" y1="49" x2="87" y2="49" stroke="#777" stroke-width="0.8"/>
+                        <line x1="75" y1="44" x2="85" y2="54" stroke="#777" stroke-width="0.6"/>
+                        <line x1="85" y1="44" x2="75" y2="54" stroke="#777" stroke-width="0.6"/>
+                        <line x1="76" y1="42" x2="84" y2="42" stroke="#555" stroke-width="0.4" opacity="0.5"/>
+                        <line x1="76" y1="56" x2="84" y2="56" stroke="#555" stroke-width="0.4" opacity="0.5"/>
+                        
+                        <!-- Metallic shine -->
+                        <ellipse cx="50" cy="26" rx="28" ry="5" fill="#FFF" opacity="0.12"/>
                     </svg>
                 `
             }
