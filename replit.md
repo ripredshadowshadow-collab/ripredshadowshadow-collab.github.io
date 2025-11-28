@@ -92,7 +92,10 @@ This project is now configured for GitHub with:
 4. **Add video files** to GitHub Releases (optional, for download)
 
 ## Recent Changes (Nov 28, 2025)
-- Significantly enhanced car realism with gradient shading and detailed features:
+- Simplified car designs to side-view perspective (2 visible wheels):
+  - Removed top wheels for cleaner side-profile appearance
+  - Kept front and rear wheels only showing realistic side view
+- Enhanced car realism with gradient shading and detailed features:
   - **AE86**: Gradient body shading, curved windshields, pop-up style headlights, detailed rims with spokes, brake lights, hood vents
   - **GT-R**: Body gradient, aggressive hood scoops, angled windshields, iconic gold stripe, triple headlight design, LED-style taillights, star-pattern sport rims, rear wing
   - **BRZ**: Smooth body curves with gradient, lower accent stripe, rounded LED headlights, clean square taillights, mesh-pattern lightweight wheels
