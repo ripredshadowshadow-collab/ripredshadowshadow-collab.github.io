@@ -2252,7 +2252,9 @@
             // Initialize WebSocket connection
             connect() {
                 const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-                const wsUrl = `${protocol}//${window.location.host}/ws`;
+                // Use Replit backend for multiplayer
+                const backendHost = '55d6c138-b8db-46d6-9bd2-41fc43680c39-00-3tdo2vxkwip42.sisko.replit.dev';
+                const wsUrl = `${protocol}//${backendHost}/ws`;
                 
                 this.ws = new WebSocket(wsUrl);
                 
