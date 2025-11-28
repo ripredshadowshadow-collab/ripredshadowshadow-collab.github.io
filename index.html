@@ -1320,8 +1320,8 @@
                 this.updateDisplay();
 
                 // 4. Trap Spawning Logic
-                // Spawn a new set of traps when the score is a multiple of 10
-                if (this.score % 10 === 0 && this.score > 0) { 
+                // Spawn a new set of traps when the score is a multiple of 15 (less frequent)
+                if (this.score % 15 === 0 && this.score > 0) { 
                     this.spawnTraps(this.TRAP_SPAWN_RANGE);
                 }
             },
@@ -1338,19 +1338,20 @@
                 const allLanes = [...Array(this.GRID_ROWS).keys()]; // [0, 1, 2, 3, 4]
                 let safeLanes = [];
 
-                // 1. Decide on 1 or 2 safe grids (50/50 chance)
-                const numSafeLanes = Math.random() < 0.5 ? 1 : 2; 
+                // 1. Decide on 2 or 3 safe grids (50/50 chance) - more safe lanes for easier gameplay
+                const numSafeLanes = Math.random() < 0.5 ? 2 : 3; 
 
-                if (numSafeLanes === 1) {
-                    // Choose 1 random safe lane (0, 1, 2, 3, 4)
-                    const safeLane = Math.floor(Math.random() * this.GRID_ROWS);
-                    safeLanes.push(safeLane);
-                } else {
+                if (numSafeLanes === 2) {
                     // Choose 2 adjacent safe lanes: (0, 1), (1, 2), (2, 3), or (3, 4)
-                    // We only need to pick 4 starting positions to guarantee a pair of adjacent lanes
                     const startingLane = Math.floor(Math.random() * (this.GRID_ROWS - 1)); // 0, 1, 2, or 3
                     safeLanes.push(startingLane);
                     safeLanes.push(startingLane + 1);
+                } else {
+                    // Choose 3 adjacent safe lanes: (0, 1, 2), (1, 2, 3), or (2, 3, 4)
+                    const startingLane = Math.floor(Math.random() * (this.GRID_ROWS - 2)); // 0, 1, or 2
+                    safeLanes.push(startingLane);
+                    safeLanes.push(startingLane + 1);
+                    safeLanes.push(startingLane + 2);
                 }
 
                 // 2. Determine trap lanes (all lanes NOT in safeLanes)
