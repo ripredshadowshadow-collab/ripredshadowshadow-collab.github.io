@@ -423,14 +423,25 @@
         </svg>
     </button>
 
-    <!-- Engine Start Sound (One-time at race start) -->
-    <audio id="engine-start-sound" preload="auto">
-        <source src="attached_assets/engine start_1764390291965.mp3" type="audio/mpeg">
+    <!-- Engine Start Sound (Plays until car starts moving) -->
+    <audio id="engine-start-sound" preload="auto" loop>
+        <source src="attached_assets/engine start_1764391712357.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Engine Idle Sound (Loops until first move) -->
-    <audio id="engine-idle-sound" preload="auto" loop>
-        <source src="attached_assets/engine start_1764390673547.mp3" type="audio/mpeg">
+    <!-- Car-Specific Acceleration Sounds -->
+    <audio id="toyota-acc-sound" preload="auto">
+        <source src="attached_assets/toyota acc_1764391712357.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="subaru-acc-sound" preload="auto">
+        <source src="attached_assets/subaru acc_1764391712357.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="nissan-acc-sound" preload="auto">
+        <source src="attached_assets/nissan acc_1764391712357.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Supra Ratatatata Sound (Plays when car stops after movement) -->
+    <audio id="supra-ratatatata-sound" preload="auto">
+        <source src="attached_assets/supra_ratatatata_1764391712357.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Main Menu Content Container -->
@@ -1518,6 +1529,11 @@
             gameTimerStarted: false,
             playerHasMoved: false,
             engineIdleInterval: null,
+            currentCarId: 'AE86',
+            accSoundTimeout: null,
+            idleTimeout: null,
+            lastMoveTime: 0,
+            isAccSoundPlaying: false,
             
             init(carId) {
                 this.car = document.getElementById('game-car');
@@ -1527,6 +1543,7 @@
                 this.gameOverMessage = document.getElementById('game-over-message');
                 this.finalScoreDisplay = document.getElementById('final-game-score');
                 this.timerDisplay = document.getElementById('game-timer-display');
+                this.currentCarId = carId || 'AE86';
                 
                 if (!this.car || !this.track || !this.trapContainer || !this.scoreDisplay || !this.gameOverMessage || !this.timerDisplay) {
                     console.error("Game elements not found.");
@@ -1538,7 +1555,6 @@
                     this.car.innerHTML = carData[carId].svg;
                 } else {
                     console.error("Selected car SVG not found. Using default.");
-                    // Fallback to a simple car shape if somehow the ID is missing
                     this.car.innerHTML = carData['AE86'].svg; 
                 }
 
@@ -1560,8 +1576,8 @@
                 this.track.removeEventListener('touchstart', this.boundHandleClick);
                 // Stop timer
                 if (this.timerInterval) clearInterval(this.timerInterval);
-                // Stop engine idle sound
-                this.stopEngineIdleLoop();
+                // Stop all sounds
+                this.stopAllSounds();
             },
 
             reset() {
@@ -1572,16 +1588,20 @@
                 this.elapsedTime = 0;
                 this.gameTimerStarted = false;
                 this.playerHasMoved = false;
+                this.lastMoveTime = 0;
+                this.isAccSoundPlaying = false;
                 
                 // Stop previous timer if exists
                 if (this.timerInterval) clearInterval(this.timerInterval);
                 
+                // Stop all sounds and clear timeouts
+                this.stopAllSounds();
+                
                 this.gameOverMessage.style.display = 'none';
                 this.timerDisplay.textContent = '0s';
                 
-                // Play engine start sound and start idle loop
+                // Play engine start sound (loops until first move)
                 this.playEngineStart();
-                this.startEngineIdleLoop();
                 
                 // Initial render
                 this.render();
@@ -1591,10 +1611,113 @@
                 this.spawnTraps(this.TRAP_SPAWN_RANGE);
             },
             
+            isMuted() {
+                return document.getElementById('sound-toggle').classList.contains('muted');
+            },
+            
             playEngineStart() {
                 try {
-                    if (document.getElementById('sound-toggle').classList.contains('muted')) return;
+                    if (this.isMuted()) return;
                     const sound = document.getElementById('engine-start-sound');
+                    if (sound) {
+                        sound.currentTime = 0;
+                        sound.loop = true;
+                        sound.play().catch(() => {});
+                    }
+                } catch (e) {}
+            },
+            
+            stopEngineStart() {
+                try {
+                    const sound = document.getElementById('engine-start-sound');
+                    if (sound) {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    }
+                } catch (e) {}
+            },
+            
+            getCarAccSoundId() {
+                switch(this.currentCarId) {
+                    case 'AE86': return 'toyota-acc-sound';
+                    case 'GTR': return 'nissan-acc-sound';
+                    case 'BRZ': return 'subaru-acc-sound';
+                    default: return 'toyota-acc-sound';
+                }
+            },
+            
+            playCarAccSound() {
+                try {
+                    if (this.isMuted()) return;
+                    
+                    const soundId = this.getCarAccSoundId();
+                    const sound = document.getElementById(soundId);
+                    if (!sound) return;
+                    
+                    // If already playing, just extend the timeout
+                    if (this.isAccSoundPlaying) {
+                        if (this.accSoundTimeout) clearTimeout(this.accSoundTimeout);
+                        this.accSoundTimeout = setTimeout(() => {
+                            sound.pause();
+                            sound.currentTime = 0;
+                            this.isAccSoundPlaying = false;
+                            this.checkForIdle();
+                        }, 3000);
+                        return;
+                    }
+                    
+                    // Start playing
+                    sound.currentTime = 0;
+                    sound.play().catch(() => {});
+                    this.isAccSoundPlaying = true;
+                    
+                    // Stop after 3 seconds
+                    if (this.accSoundTimeout) clearTimeout(this.accSoundTimeout);
+                    this.accSoundTimeout = setTimeout(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        this.isAccSoundPlaying = false;
+                        this.checkForIdle();
+                    }, 3000);
+                } catch (e) {}
+            },
+            
+            stopCarAccSound() {
+                try {
+                    if (this.accSoundTimeout) {
+                        clearTimeout(this.accSoundTimeout);
+                        this.accSoundTimeout = null;
+                    }
+                    ['toyota-acc-sound', 'nissan-acc-sound', 'subaru-acc-sound'].forEach(id => {
+                        const sound = document.getElementById(id);
+                        if (sound) {
+                            sound.pause();
+                            sound.currentTime = 0;
+                        }
+                    });
+                    this.isAccSoundPlaying = false;
+                } catch (e) {}
+            },
+            
+            checkForIdle() {
+                // Clear any existing idle timeout
+                if (this.idleTimeout) clearTimeout(this.idleTimeout);
+                
+                // Only check if game is still running and player has moved
+                if (this.isGameOver || !this.playerHasMoved) return;
+                
+                // Set a timeout to detect if player stops moving
+                this.idleTimeout = setTimeout(() => {
+                    if (!this.isGameOver && this.playerHasMoved && !this.isAccSoundPlaying) {
+                        this.playIdleSound();
+                    }
+                }, 500);
+            },
+            
+            playIdleSound() {
+                try {
+                    if (this.isMuted() || this.isGameOver) return;
+                    const sound = document.getElementById('supra-ratatatata-sound');
                     if (sound) {
                         sound.currentTime = 0;
                         sound.play().catch(() => {});
@@ -1602,34 +1725,111 @@
                 } catch (e) {}
             },
             
-            startEngineIdleLoop() {
+            stopIdleSound() {
                 try {
-                    if (document.getElementById('sound-toggle').classList.contains('muted')) return;
-                    
-                    // Stop any existing loop
-                    if (this.engineIdleInterval) clearInterval(this.engineIdleInterval);
-                    
-                    const idleSound = document.getElementById('engine-idle-sound');
-                    if (idleSound) {
-                        idleSound.currentTime = 0;
-                        idleSound.loop = true;
-                        idleSound.play().catch(() => {});
+                    const sound = document.getElementById('supra-ratatatata-sound');
+                    if (sound) {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    }
+                    if (this.idleTimeout) {
+                        clearTimeout(this.idleTimeout);
+                        this.idleTimeout = null;
                     }
                 } catch (e) {}
             },
             
-            stopEngineIdleLoop() {
+            crashSoundTimeout: null,
+            crashAudioNodes: [],
+            
+            playCrashSound() {
                 try {
-                    const idleSound = document.getElementById('engine-idle-sound');
-                    if (idleSound) {
-                        idleSound.pause();
-                        idleSound.currentTime = 0;
+                    if (this.isMuted()) return;
+                    
+                    const audioContext = window.audioContext || (window.audioContext = new (window.AudioContext || window.webkitAudioContext)());
+                    const now = audioContext.currentTime;
+                    const duration = 60; // Exactly 1 minute
+                    
+                    // Store nodes for cleanup
+                    this.crashAudioNodes = [];
+                    
+                    // Create a long explosion/fire crackling sound that lasts 1 minute
+                    const createCrashLayer = (startTime, layerDuration) => {
+                        const bufferSize = audioContext.sampleRate * layerDuration;
+                        const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                        const noiseData = noiseBuffer.getChannelData(0);
+                        
+                        for (let i = 0; i < bufferSize; i++) {
+                            const t = i / bufferSize;
+                            const envelope = Math.exp(-t * 3) * 0.5 + Math.exp(-t * 0.5) * 0.5;
+                            noiseData[i] = (Math.random() * 2 - 1) * envelope;
+                        }
+                        
+                        const noiseSource = audioContext.createBufferSource();
+                        noiseSource.buffer = noiseBuffer;
+                        
+                        const lowPass = audioContext.createBiquadFilter();
+                        lowPass.type = 'lowpass';
+                        lowPass.frequency.setValueAtTime(800, startTime);
+                        lowPass.frequency.exponentialRampToValueAtTime(200, startTime + layerDuration);
+                        
+                        const noiseGain = audioContext.createGain();
+                        noiseSource.connect(lowPass);
+                        lowPass.connect(noiseGain);
+                        noiseGain.connect(audioContext.destination);
+                        noiseGain.gain.setValueAtTime(0.3, startTime);
+                        noiseGain.gain.exponentialRampToValueAtTime(0.01, startTime + layerDuration);
+                        
+                        noiseSource.start(startTime);
+                        noiseSource.stop(startTime + layerDuration);
+                        this.crashAudioNodes.push(noiseSource);
+                    };
+                    
+                    // Initial loud explosion
+                    const boomOsc = audioContext.createOscillator();
+                    const boomGain = audioContext.createGain();
+                    boomOsc.connect(boomGain);
+                    boomGain.connect(audioContext.destination);
+                    boomOsc.type = 'sine';
+                    boomOsc.frequency.setValueAtTime(150, now);
+                    boomOsc.frequency.exponentialRampToValueAtTime(20, now + 2);
+                    boomGain.gain.setValueAtTime(0.5, now);
+                    boomGain.gain.exponentialRampToValueAtTime(0.01, now + 3);
+                    boomOsc.start(now);
+                    boomOsc.stop(now + 3);
+                    this.crashAudioNodes.push(boomOsc);
+                    
+                    // Create crackling layers throughout the duration
+                    for (let i = 0; i < 20; i++) {
+                        createCrashLayer(now + i * 3, Math.min(5, duration - i * 3));
                     }
-                    if (this.engineIdleInterval) {
-                        clearInterval(this.engineIdleInterval);
-                        this.engineIdleInterval = null;
-                    }
+                    
+                    // Stop after exactly 1 minute
+                    this.crashSoundTimeout = setTimeout(() => {
+                        this.stopCrashSound();
+                    }, 60000);
+                    
                 } catch (e) {}
+            },
+            
+            stopCrashSound() {
+                try {
+                    if (this.crashSoundTimeout) {
+                        clearTimeout(this.crashSoundTimeout);
+                        this.crashSoundTimeout = null;
+                    }
+                    this.crashAudioNodes.forEach(node => {
+                        try { node.stop(); } catch(e) {}
+                    });
+                    this.crashAudioNodes = [];
+                } catch (e) {}
+            },
+            
+            stopAllSounds() {
+                this.stopEngineStart();
+                this.stopCarAccSound();
+                this.stopIdleSound();
+                this.stopCrashSound();
             },
             
             handleKey(e) {
@@ -1664,11 +1864,14 @@
             changeLaneAndStep(direction) {
                 if (this.isGameOver) return;
                 
-                // Stop engine idle sound on first move
+                // On first move: stop engine start sound, then play car acceleration
                 if (!this.playerHasMoved) {
                     this.playerHasMoved = true;
-                    this.stopEngineIdleLoop();
+                    this.stopEngineStart(); // Stop engine start sound
                 }
+                
+                // Stop idle sound when moving again (sounds play sequentially)
+                this.stopIdleSound();
                 
                 // Start timer on first move
                 if (!this.gameTimerStarted) {
@@ -1680,8 +1883,9 @@
                     }, 100);
                 }
                 
-                // Play car movement sound
-                this.playMoveSound();
+                // Play car-specific acceleration sound
+                this.playCarAccSound();
+                this.lastMoveTime = Date.now();
                 
                 // 1. Calculate new lane (if direction is not 0)
                 if (direction !== 0) {
@@ -1923,7 +2127,13 @@
             gameOver() {
                 this.isGameOver = true;
                 if (this.timerInterval) clearInterval(this.timerInterval);
-                this.stopEngineIdleLoop();
+                
+                // Stop all other sounds first (sequential - one sound at a time)
+                this.stopAllSounds();
+                
+                // Play crash sound (lasts exactly 1 minute)
+                this.playCrashSound();
+                
                 const gridsText = this.score === 1 ? 'Grid' : 'Grids';
                 const secondsText = this.elapsedTime === 1 ? 'second' : 'seconds';
                 this.finalScoreDisplay.textContent = `${this.score} ${gridsText} in ${this.elapsedTime}${secondsText === 'second' ? 's' : 's'}`;
@@ -2767,14 +2977,26 @@
                 return this.rng / 0x7fffffff;
             },
             
+            // Sound state for online mode
+            accSoundTimeout: null,
+            idleTimeout: null,
+            lastMoveTime: 0,
+            isAccSoundPlaying: false,
+            crashSoundTimeout: null,
+            crashAudioNodes: [],
+            
             // Initialize Race
             initRace() {
                 this.hideAllViews();
                 document.getElementById('online-racing-view').classList.remove('hidden');
                 
-                // Play engine start sound and start idle loop
+                // Reset sound state
+                this.isAccSoundPlaying = false;
+                this.lastMoveTime = 0;
+                this.stopAllSounds();
+                
+                // Play engine start sound (loops until first move)
                 this.playEngineStart();
-                this.startEngineIdleLoop();
                 
                 // Reset game state
                 this.currentLane = 2;
@@ -2871,19 +3093,23 @@
             changeLaneAndStep(direction) {
                 if (this.isGameOver) return;
                 
-                // Stop engine idle sound on first move
+                // On first move: stop engine start sound
                 if (!this.playerHasMoved) {
                     this.playerHasMoved = true;
-                    this.stopEngineIdleLoop();
+                    this.stopEngineStart();
                 }
+                
+                // Stop idle sound when moving again (sounds play sequentially)
+                this.stopIdleSound();
                 
                 // Debounce: prevent multiple movements in quick succession (fix for double movement)
                 const now = Date.now();
                 if (now - this.lastMovementTime < 50) return;
                 this.lastMovementTime = now;
                 
-                // Play car movement sound
-                this.playMoveSound();
+                // Play car-specific acceleration sound
+                this.playCarAccSound();
+                this.lastMoveTime = Date.now();
                 
                 // Change lane
                 if (direction !== 0) {
@@ -2930,105 +3156,99 @@
                 });
             },
             
-            playMoveSound() {
+            getCarAccSoundId() {
+                switch(this.carId) {
+                    case 'AE86': return 'toyota-acc-sound';
+                    case 'GTR': return 'nissan-acc-sound';
+                    case 'BRZ': return 'subaru-acc-sound';
+                    default: return 'toyota-acc-sound';
+                }
+            },
+            
+            playCarAccSound() {
                 try {
-                    const audioContext = window.audioContext || (window.audioContext = new (window.AudioContext || window.webkitAudioContext)());
-                    const now = audioContext.currentTime;
-                    const duration = 0.15;
+                    const soundId = this.getCarAccSoundId();
+                    const sound = document.getElementById(soundId);
+                    if (!sound) return;
                     
-                    // V8 Engine characteristics - deep rumble with firing pulses
-                    
-                    // Low frequency rumble (engine block)
-                    const bassOsc = audioContext.createOscillator();
-                    const bassGain = audioContext.createGain();
-                    bassOsc.connect(bassGain);
-                    bassGain.connect(audioContext.destination);
-                    bassOsc.type = 'sine';
-                    bassOsc.frequency.setValueAtTime(80, now);
-                    bassOsc.frequency.linearRampToValueAtTime(150, now + 0.07);
-                    bassOsc.frequency.linearRampToValueAtTime(100, now + duration);
-                    bassGain.gain.setValueAtTime(0.25, now);
-                    bassGain.gain.linearRampToValueAtTime(0.3, now + 0.06);
-                    bassGain.gain.linearRampToValueAtTime(0, now + duration);
-                    
-                    // Mid frequency (cylinder firing)
-                    const midOsc = audioContext.createOscillator();
-                    const midGain = audioContext.createGain();
-                    midOsc.connect(midGain);
-                    midGain.connect(audioContext.destination);
-                    midOsc.type = 'sine';
-                    midOsc.frequency.setValueAtTime(200, now);
-                    midOsc.frequency.linearRampToValueAtTime(350, now + 0.08);
-                    midOsc.frequency.linearRampToValueAtTime(250, now + duration);
-                    midGain.gain.setValueAtTime(0.2, now);
-                    midGain.gain.linearRampToValueAtTime(0.28, now + 0.06);
-                    midGain.gain.linearRampToValueAtTime(0, now + duration);
-                    
-                    // High harmonic (valve noise)
-                    const highOsc = audioContext.createOscillator();
-                    const highGain = audioContext.createGain();
-                    highOsc.connect(highGain);
-                    highGain.connect(audioContext.destination);
-                    highOsc.type = 'sine';
-                    highOsc.frequency.setValueAtTime(400, now);
-                    highOsc.frequency.linearRampToValueAtTime(550, now + 0.08);
-                    highOsc.frequency.linearRampToValueAtTime(420, now + duration);
-                    highGain.gain.setValueAtTime(0.12, now);
-                    highGain.gain.linearRampToValueAtTime(0.18, now + 0.05);
-                    highGain.gain.linearRampToValueAtTime(0, now + duration);
-                    
-                    // Engine knock/firing pulse noise
-                    const bufferSize = audioContext.sampleRate * duration;
-                    const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-                    const noiseData = noiseBuffer.getChannelData(0);
-                    
-                    // Create pulsating noise pattern (V8 8-cylinder firing)
-                    const fireRate = 8;
-                    for (let i = 0; i < bufferSize; i++) {
-                        const phase = (i / audioContext.sampleRate) * fireRate * Math.PI * 2;
-                        const pulse = Math.sin(phase) > 0.7 ? 1 : 0;
-                        noiseData[i] = (Math.random() * 2 - 1) * pulse * (1 - i / bufferSize);
+                    // If already playing, just extend the timeout
+                    if (this.isAccSoundPlaying) {
+                        if (this.accSoundTimeout) clearTimeout(this.accSoundTimeout);
+                        this.accSoundTimeout = setTimeout(() => {
+                            sound.pause();
+                            sound.currentTime = 0;
+                            this.isAccSoundPlaying = false;
+                            this.checkForIdle();
+                        }, 3000);
+                        return;
                     }
                     
-                    const noiseSource = audioContext.createBufferSource();
-                    noiseSource.buffer = noiseBuffer;
+                    // Start playing
+                    sound.currentTime = 0;
+                    sound.play().catch(() => {});
+                    this.isAccSoundPlaying = true;
                     
-                    // Multi-stage filter for engine texture
-                    const noiseBandPass = audioContext.createBiquadFilter();
-                    noiseBandPass.type = 'bandpass';
-                    noiseBandPass.frequency.setValueAtTime(600, now);
-                    noiseBandPass.frequency.linearRampToValueAtTime(900, now + duration);
-                    noiseBandPass.Q.setValueAtTime(1.5, now);
-                    
-                    const noiseGain = audioContext.createGain();
-                    noiseSource.connect(noiseBandPass);
-                    noiseBandPass.connect(noiseGain);
-                    noiseGain.connect(audioContext.destination);
-                    noiseGain.gain.setValueAtTime(0.12, now);
-                    noiseGain.gain.linearRampToValueAtTime(0.18, now + 0.04);
-                    noiseGain.gain.linearRampToValueAtTime(0, now + duration);
-                    
-                    // Compression-like effect with attack burst
-                    const burstOsc = audioContext.createOscillator();
-                    const burstGain = audioContext.createGain();
-                    burstOsc.connect(burstGain);
-                    burstGain.connect(audioContext.destination);
-                    burstOsc.type = 'square';
-                    burstOsc.frequency.setValueAtTime(250, now);
-                    burstGain.gain.setValueAtTime(0, now);
-                    burstGain.gain.linearRampToValueAtTime(0.08, now + 0.02);
-                    burstGain.gain.linearRampToValueAtTime(0, now + 0.08);
-                    
-                    bassOsc.start(now);
-                    bassOsc.stop(now + duration);
-                    midOsc.start(now);
-                    midOsc.stop(now + duration);
-                    highOsc.start(now);
-                    highOsc.stop(now + duration);
-                    burstOsc.start(now);
-                    burstOsc.stop(now + duration);
-                    noiseSource.start(now);
-                    noiseSource.stop(now + duration);
+                    // Stop after 3 seconds
+                    if (this.accSoundTimeout) clearTimeout(this.accSoundTimeout);
+                    this.accSoundTimeout = setTimeout(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                        this.isAccSoundPlaying = false;
+                        this.checkForIdle();
+                    }, 3000);
+                } catch (e) {}
+            },
+            
+            stopCarAccSound() {
+                try {
+                    if (this.accSoundTimeout) {
+                        clearTimeout(this.accSoundTimeout);
+                        this.accSoundTimeout = null;
+                    }
+                    ['toyota-acc-sound', 'nissan-acc-sound', 'subaru-acc-sound'].forEach(id => {
+                        const sound = document.getElementById(id);
+                        if (sound) {
+                            sound.pause();
+                            sound.currentTime = 0;
+                        }
+                    });
+                    this.isAccSoundPlaying = false;
+                } catch (e) {}
+            },
+            
+            checkForIdle() {
+                if (this.idleTimeout) clearTimeout(this.idleTimeout);
+                if (this.isGameOver || !this.playerHasMoved) return;
+                
+                this.idleTimeout = setTimeout(() => {
+                    if (!this.isGameOver && this.playerHasMoved && !this.isAccSoundPlaying) {
+                        this.playIdleSound();
+                    }
+                }, 500);
+            },
+            
+            playIdleSound() {
+                try {
+                    if (this.isGameOver) return;
+                    const sound = document.getElementById('supra-ratatatata-sound');
+                    if (sound) {
+                        sound.currentTime = 0;
+                        sound.play().catch(() => {});
+                    }
+                } catch (e) {}
+            },
+            
+            stopIdleSound() {
+                try {
+                    const sound = document.getElementById('supra-ratatatata-sound');
+                    if (sound) {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    }
+                    if (this.idleTimeout) {
+                        clearTimeout(this.idleTimeout);
+                        this.idleTimeout = null;
+                    }
                 } catch (e) {}
             },
             
@@ -3037,34 +3257,104 @@
                     const sound = document.getElementById('engine-start-sound');
                     if (sound) {
                         sound.currentTime = 0;
+                        sound.loop = true;
                         sound.play().catch(() => {});
                     }
                 } catch (e) {}
             },
             
-            startEngineIdleLoop() {
+            stopEngineStart() {
                 try {
-                    const idleSound = document.getElementById('engine-idle-sound');
-                    if (idleSound) {
-                        idleSound.currentTime = 0;
-                        idleSound.loop = true;
-                        idleSound.play().catch(() => {});
+                    const sound = document.getElementById('engine-start-sound');
+                    if (sound) {
+                        sound.pause();
+                        sound.currentTime = 0;
                     }
                 } catch (e) {}
             },
             
-            stopEngineIdleLoop() {
+            playCrashSound() {
                 try {
-                    const idleSound = document.getElementById('engine-idle-sound');
-                    if (idleSound) {
-                        idleSound.pause();
-                        idleSound.currentTime = 0;
+                    const audioContext = window.audioContext || (window.audioContext = new (window.AudioContext || window.webkitAudioContext)());
+                    const now = audioContext.currentTime;
+                    const duration = 60; // Exactly 1 minute
+                    
+                    this.crashAudioNodes = [];
+                    
+                    const createCrashLayer = (startTime, layerDuration) => {
+                        const bufferSize = audioContext.sampleRate * layerDuration;
+                        const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                        const noiseData = noiseBuffer.getChannelData(0);
+                        
+                        for (let i = 0; i < bufferSize; i++) {
+                            const t = i / bufferSize;
+                            const envelope = Math.exp(-t * 3) * 0.5 + Math.exp(-t * 0.5) * 0.5;
+                            noiseData[i] = (Math.random() * 2 - 1) * envelope;
+                        }
+                        
+                        const noiseSource = audioContext.createBufferSource();
+                        noiseSource.buffer = noiseBuffer;
+                        
+                        const lowPass = audioContext.createBiquadFilter();
+                        lowPass.type = 'lowpass';
+                        lowPass.frequency.setValueAtTime(800, startTime);
+                        lowPass.frequency.exponentialRampToValueAtTime(200, startTime + layerDuration);
+                        
+                        const noiseGain = audioContext.createGain();
+                        noiseSource.connect(lowPass);
+                        lowPass.connect(noiseGain);
+                        noiseGain.connect(audioContext.destination);
+                        noiseGain.gain.setValueAtTime(0.3, startTime);
+                        noiseGain.gain.exponentialRampToValueAtTime(0.01, startTime + layerDuration);
+                        
+                        noiseSource.start(startTime);
+                        noiseSource.stop(startTime + layerDuration);
+                        this.crashAudioNodes.push(noiseSource);
+                    };
+                    
+                    // Initial loud explosion
+                    const boomOsc = audioContext.createOscillator();
+                    const boomGain = audioContext.createGain();
+                    boomOsc.connect(boomGain);
+                    boomGain.connect(audioContext.destination);
+                    boomOsc.type = 'sine';
+                    boomOsc.frequency.setValueAtTime(150, now);
+                    boomOsc.frequency.exponentialRampToValueAtTime(20, now + 2);
+                    boomGain.gain.setValueAtTime(0.5, now);
+                    boomGain.gain.exponentialRampToValueAtTime(0.01, now + 3);
+                    boomOsc.start(now);
+                    boomOsc.stop(now + 3);
+                    this.crashAudioNodes.push(boomOsc);
+                    
+                    for (let i = 0; i < 20; i++) {
+                        createCrashLayer(now + i * 3, Math.min(5, duration - i * 3));
                     }
-                    if (this.engineIdleInterval) {
-                        clearInterval(this.engineIdleInterval);
-                        this.engineIdleInterval = null;
-                    }
+                    
+                    this.crashSoundTimeout = setTimeout(() => {
+                        this.stopCrashSound();
+                    }, 60000);
+                    
                 } catch (e) {}
+            },
+            
+            stopCrashSound() {
+                try {
+                    if (this.crashSoundTimeout) {
+                        clearTimeout(this.crashSoundTimeout);
+                        this.crashSoundTimeout = null;
+                    }
+                    this.crashAudioNodes.forEach(node => {
+                        try { node.stop(); } catch(e) {}
+                    });
+                    this.crashAudioNodes = [];
+                } catch (e) {}
+            },
+            
+            stopAllSounds() {
+                this.stopEngineStart();
+                this.stopCarAccSound();
+                this.stopIdleSound();
+                this.stopCrashSound();
             },
             
             spawnTraps(distance) {
@@ -3177,8 +3467,11 @@
                     clearInterval(this.timerInterval);
                 }
                 
-                // Stop engine idle sound
-                this.stopEngineIdleLoop();
+                // Stop all other sounds first (sequential - one sound at a time)
+                this.stopAllSounds();
+                
+                // Play crash sound (lasts exactly 1 minute)
+                this.playCrashSound();
                 
                 // Remove event listeners
                 document.removeEventListener('keydown', this.boundHandleKey);

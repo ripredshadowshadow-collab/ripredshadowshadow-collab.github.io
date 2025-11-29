@@ -128,6 +128,18 @@ This project is now configured for GitHub with:
 4. **Add video files** to GitHub Releases (optional, for download)
 
 ## Recent Changes (Nov 29, 2025)
+- **NEW: Car-Specific Sound System**
+  - Engine start sound plays when race begins (loops until car starts moving)
+  - Car-specific acceleration sounds based on selected car:
+    - **Toyota AE86**: Toyota engine acceleration sound
+    - **Nissan Skyline GTR**: Nissan engine acceleration sound
+    - **Subaru BRZ**: Subaru engine acceleration sound
+  - Acceleration sounds play for max 3 seconds per click session
+  - Supra "ratatatata" idle sound plays when car stops after moving
+  - Crash/explosion sound (1 minute duration) plays when car crashes
+  - Sequential sound playback: each sound ends before the next starts
+  - Sound system works in both Practice mode and Online mode
+
 - **Replit Environment Setup Complete**
   - Installed Python dependencies via uv (FastAPI, Uvicorn, WebSockets)
   - Configured workflow to run FastAPI server on port 5000
