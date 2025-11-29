@@ -423,9 +423,14 @@
         </svg>
     </button>
 
-    <!-- Engine Start Sound -->
+    <!-- Engine Start Sound (One-time at race start) -->
     <audio id="engine-start-sound" preload="auto">
         <source src="attached_assets/engine start_1764390291965.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Engine Idle Sound (Loops until first move) -->
+    <audio id="engine-idle-sound" preload="auto" loop>
+        <source src="attached_assets/engine start_1764390673547.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Main Menu Content Container -->
@@ -1511,6 +1516,8 @@
             timerInterval: null,
             timerDisplay: null,
             gameTimerStarted: false,
+            playerHasMoved: false,
+            engineIdleInterval: null,
             
             init(carId) {
                 this.car = document.getElementById('game-car');
@@ -1553,6 +1560,8 @@
                 this.track.removeEventListener('touchstart', this.boundHandleClick);
                 // Stop timer
                 if (this.timerInterval) clearInterval(this.timerInterval);
+                // Stop engine idle sound
+                this.stopEngineIdleLoop();
             },
 
             reset() {
@@ -1562,6 +1571,7 @@
                 this.traps = [];
                 this.elapsedTime = 0;
                 this.gameTimerStarted = false;
+                this.playerHasMoved = false;
                 
                 // Stop previous timer if exists
                 if (this.timerInterval) clearInterval(this.timerInterval);
@@ -1569,8 +1579,9 @@
                 this.gameOverMessage.style.display = 'none';
                 this.timerDisplay.textContent = '0s';
                 
-                // Play engine start sound
+                // Play engine start sound and start idle loop
                 this.playEngineStart();
+                this.startEngineIdleLoop();
                 
                 // Initial render
                 this.render();
@@ -1587,6 +1598,36 @@
                     if (sound) {
                         sound.currentTime = 0;
                         sound.play().catch(() => {});
+                    }
+                } catch (e) {}
+            },
+            
+            startEngineIdleLoop() {
+                try {
+                    if (document.getElementById('sound-toggle').classList.contains('muted')) return;
+                    
+                    // Stop any existing loop
+                    if (this.engineIdleInterval) clearInterval(this.engineIdleInterval);
+                    
+                    const idleSound = document.getElementById('engine-idle-sound');
+                    if (idleSound) {
+                        idleSound.currentTime = 0;
+                        idleSound.loop = true;
+                        idleSound.play().catch(() => {});
+                    }
+                } catch (e) {}
+            },
+            
+            stopEngineIdleLoop() {
+                try {
+                    const idleSound = document.getElementById('engine-idle-sound');
+                    if (idleSound) {
+                        idleSound.pause();
+                        idleSound.currentTime = 0;
+                    }
+                    if (this.engineIdleInterval) {
+                        clearInterval(this.engineIdleInterval);
+                        this.engineIdleInterval = null;
                     }
                 } catch (e) {}
             },
@@ -1622,6 +1663,12 @@
             
             changeLaneAndStep(direction) {
                 if (this.isGameOver) return;
+                
+                // Stop engine idle sound on first move
+                if (!this.playerHasMoved) {
+                    this.playerHasMoved = true;
+                    this.stopEngineIdleLoop();
+                }
                 
                 // Start timer on first move
                 if (!this.gameTimerStarted) {
@@ -1876,6 +1923,7 @@
             gameOver() {
                 this.isGameOver = true;
                 if (this.timerInterval) clearInterval(this.timerInterval);
+                this.stopEngineIdleLoop();
                 const gridsText = this.score === 1 ? 'Grid' : 'Grids';
                 const secondsText = this.elapsedTime === 1 ? 'second' : 'seconds';
                 this.finalScoreDisplay.textContent = `${this.score} ${gridsText} in ${this.elapsedTime}${secondsText === 'second' ? 's' : 's'}`;
@@ -2381,6 +2429,8 @@
             traps: [],
             trapSeed: null,
             rng: null,
+            playerHasMoved: false,
+            engineIdleInterval: null,
             
             // DOM Elements
             elements: {},
@@ -2722,8 +2772,9 @@
                 this.hideAllViews();
                 document.getElementById('online-racing-view').classList.remove('hidden');
                 
-                // Play engine start sound
+                // Play engine start sound and start idle loop
                 this.playEngineStart();
+                this.startEngineIdleLoop();
                 
                 // Reset game state
                 this.currentLane = 2;
@@ -2732,6 +2783,7 @@
                 this.elapsedTime = 0;
                 this.traps = [];
                 this.rng = this.trapSeed;
+                this.playerHasMoved = false;
                 
                 // Get DOM elements
                 this.elements = {
@@ -2818,6 +2870,12 @@
             
             changeLaneAndStep(direction) {
                 if (this.isGameOver) return;
+                
+                // Stop engine idle sound on first move
+                if (!this.playerHasMoved) {
+                    this.playerHasMoved = true;
+                    this.stopEngineIdleLoop();
+                }
                 
                 // Debounce: prevent multiple movements in quick succession (fix for double movement)
                 const now = Date.now();
@@ -2984,6 +3042,31 @@
                 } catch (e) {}
             },
             
+            startEngineIdleLoop() {
+                try {
+                    const idleSound = document.getElementById('engine-idle-sound');
+                    if (idleSound) {
+                        idleSound.currentTime = 0;
+                        idleSound.loop = true;
+                        idleSound.play().catch(() => {});
+                    }
+                } catch (e) {}
+            },
+            
+            stopEngineIdleLoop() {
+                try {
+                    const idleSound = document.getElementById('engine-idle-sound');
+                    if (idleSound) {
+                        idleSound.pause();
+                        idleSound.currentTime = 0;
+                    }
+                    if (this.engineIdleInterval) {
+                        clearInterval(this.engineIdleInterval);
+                        this.engineIdleInterval = null;
+                    }
+                } catch (e) {}
+            },
+            
             spawnTraps(distance) {
                 const existingTrapAtSpawn = this.traps.find(trap => trap.forwardSteps === distance);
                 if (existingTrapAtSpawn) return;
@@ -3093,6 +3176,9 @@
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);
                 }
+                
+                // Stop engine idle sound
+                this.stopEngineIdleLoop();
                 
                 // Remove event listeners
                 document.removeEventListener('keydown', this.boundHandleKey);
